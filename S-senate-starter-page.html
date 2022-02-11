@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="./style/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<style>
+  th {
+    width: 10%;
+
+  }
+</style>
+
+<body onload="tablaStarted(api_url_senate)">
+  <header class="collumn mx-5 my-4">
+    <div class="row justify-content-between mx-2">
+      <div class="d-flex">
+        <div class="col-1 p-1">
+          <img class="img-fluid img-responsive" height="270" width="270" src="img-DIG/DIG_Home_h1.png" />
+        </div>
+        <h1>Data Insight Group</h1>
+      </div>
+
+      <h3 class="mail mt-3"><i class="aaa fas fa-envelope"></i> info@datainsightgroup.net</h3>
+
+    </div>
+    <nav class="navbar navbar-expand-sm bg-light border border-5 py-0">
+
+      <ul class="nav" class="border border-dark">
+
+        <li class="nav-item">
+          <a class="nav-link desactivado" href="./home-started-page.html">Home</a>
+        </li>
+
+        <li class="nav-item dropdown activado">
+          <a class="nav-link dropdown-toggle activado" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">Congres 113</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item desactivado" href="./H-house-starter-page.html">House</a>
+            <a class="dropdown-item activado" href="./S-senate-starter-page.html">Senate</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown desactivado">
+          <a class="nav-link dropdown-toggle desactivado" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">Attendance</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item desactivado" href="./H-attendance_house.html">House</a>
+            <a class="dropdown-item desactivado" href="./S-attendance_senate.html">Senate</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown desactivado">
+          <a class="nav-link dropdown-toggle desactivado" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">Party Loyalty</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item desactivado" href="./H-party-loyalty_house.html">House</a>
+            <a class="dropdown-item desactivado" href="./S-party-loyalty_senate.html">Senate</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="container">
+    <div>
+      <h2>Senators</h2>
+      <p>First convened in 1789, the composition and powers of the Senate are established in Article One of the
+        U.S.
+        Constitution. Each state is represented by two senators, regardless of population, who serve staggered
+        six-year terms. The Senate has several exclusive powers not granted to the House, including consenting
+        to
+        treaties as a precondition to their ratification and consenting to or confirming appointments of Cabinet
+        secretaries, federal judges, other federal executive officials, military officers, regulatory officials,
+        ambassadors, and other federal uniformed officers, as well as trial of federal officials impeached by
+        the
+        House.</p>
+    </div>
+<!-- 
+    <div class="alert alert-secondary" role="alert">
+      Oops...
+      We had problems finding the data.
+      Try again later!
+      <a href="./home-started-page.html">back to home.</a>
+    </div> -->
+
+    <div class="justify-content-around row m-2">
+      <div>
+        <span class="m-2">Filter by party:</span>
+
+        <input  onchange="Filtros(api)" type="checkbox" id="fRepublicano" name="fRepublicano" value="R">
+        <label for="fRepublicano">Republican</label>
+
+        <input onchange="Filtros(api)" type="checkbox" id="fDemocratico" name="fDemocratico" value="D">
+        <label for="fDemocratico">Democratic</label>
+
+        <input onchange="Filtros(api)" type="checkbox" id="fIndependiente" name="fIndependiente" value="ID">
+        <label for="fIndependiente">Independent</label>
+      </div>
+      <div class="pr-5">
+
+        <label for="fEstados">Choose State:</label>
+        <select onchange="Filtros(api)" name="State" id="fEstados">
+          <option  value="All">ALL</option>
+        </select>
+      </div>
+    </div>
+<!--     
+    <div class="half-circle-spinner">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+    </div> -->
+
+    <table class="table table-bordered">
+      <thead align="center">
+        <tr>
+          <th>Name</th>
+          <th>Party</th>
+          <th>State</th>
+          <th>Years in Ofice</th>
+          <th>% Votes w/ Party</th>
+        </tr>
+      </thead>
+
+      <tbody align="center" id="congress">
+        <tr v-for="element in miembros" :key="element.id">
+          <td> <a :href="element.url" target="_blank">
+            {{element.first_name}} {{element.middle_name || ""}}
+            {{element.last_name}} </a></td>
+          <td>{{element.party}}</td>
+          <td>{{element.state}}</td>
+          <td>{{element.seniority}}</td>
+          <td>%{{element.votes_with_party_pct}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </section>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <footer class="mx-5 my-5 bg-light border border-5">
+    <div class="d-flex justify-content-center">
+      <h5 class="p-2"><i class="fas fa-copyright"></i> 2021 Data Insight Group | All Rights Reserved</h5>
+    </div>
+  </footer>
+
+  <!-- <script src="./JScript-DIG/pro-congress-113-senate.js"></script> -->
+  <script src="./JScript-DIG/filtros.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
+</html>

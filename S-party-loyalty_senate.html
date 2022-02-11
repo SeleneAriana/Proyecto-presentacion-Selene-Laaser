@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+
+<body onload="parecido2(api_url_senate), tablasGlance(api_url_senate)">
+    <header class="collumn mx-5 my-4">
+        <div class="row justify-content-between mx-2">
+            <div class="d-flex">
+                <div class="col-1 p-1">
+                    <img class="img-fluid img-responsive" height="270" width="270" src="img-DIG/DIG_Home_h1.png" />
+                </div>
+                <h1>Data Insight Group</h1>
+            </div>
+
+            <h3 class="mail mt-3"><i class="aaa fas fa-envelope"></i> info@datainsightgroup.net</h3>
+
+        </div>
+        <nav class="navbar navbar-expand-sm bg-light border border-5 py-0">
+
+            <ul class="nav" class="border border-dark">
+
+                <li class="nav-item">
+                    <a class="nav-link desactivado" href="./home-started-page.html">Home</a>
+                </li>
+
+                <li class="nav-item dropdown desactivado">
+                    <a class="nav-link dropdown-toggle desactivado" data-toggle="dropdown" role="button"
+                        aria-haspopup="true" aria-expanded="false">Congres 113</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item desactivado" href="./H-house-starter-page.html">House</a>
+                        <a class="dropdown-item desactivado" href="./S-senate-starter-page.html">Senate</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown desactivado">
+                    <a class="nav-link dropdown-toggle desactivado" data-toggle="dropdown" role="button"
+                        aria-haspopup="true" aria-expanded="false">Attendance</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item desactivado" href="./H-attendance_house.html">House</a>
+                        <a class="dropdown-item desactivado" href="./S-attendance_senate.html">Senate</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown activado">
+                    <a class="nav-link dropdown-toggle activado" data-toggle="dropdown" role="button"
+                        aria-haspopup="true" aria-expanded="false">Party Loyalty</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item desactivado" href="./H-party-loyalty_house.html">House</a>
+                        <a class="dropdown-item activado" href="./S-party-loyalty_senate.html">Senate</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="container">
+        <div class="d-flex">
+            <div class="mt-5">
+                <h2>Party Loyalty</h2>
+                <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
+                    respectively, tend to be the most faithful in voting for their party's nominee for office and
+                    legislation that backs their party's agenda. </p>
+            </div>
+
+            <div class="table table-bordered">
+                <h2>Senate at a glance</h2>
+                <table>
+                    <thead align="center">
+                        <tr>
+                            <th>Party</th>
+                            <th>Number of Reps</th>
+                            <th>% Voted with Prty</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaGlance" align="center">
+                        <tr>
+                          <td>Democrat</td>
+                          <td>{{nroDemocratas}}</td>
+                          <td>{{pctVotosDemocratas}}%</td>
+                          </tr>
+                          <tr>
+                          <td>Republican</td>
+                          <td>{{nroRepublicanos}}</td>
+                          <td>{{pctVotosRepublicanos}}%</td>
+                          </tr>
+                          <tr>
+                          <td>Independent</td>
+                          <td>{{nroIndependientes}}</td>
+                          <td>{{pctVotosIndependientes || "0"}}%</td>
+                          </tr>
+                          <tr>
+                          <td>Total</td>
+                          <td>{{total}}</td>
+                          <td>{{pctTotal}}%</td>
+                          </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="d-flex">
+            <div class="table table-bordered">
+                <h2>Least Loyal <br> (Bottom 10% of Party)</h2>
+                <table>
+                    <thead align="center">
+                        <tr>
+                            <th>Name</th>
+                            <th>Number Party Votes</th>
+                            <th>% Party Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leastLoyaly" align="center">
+                        <tr v-for="datos in ll" :key="datos.id">
+                          <td><a :href=datos.url target="blank">{{datos.first_name}}
+                              {{datos.middle_name || ""}} {{datos.last_name}}</a></td>
+                          <td>{{datos.missed_votes}}</td>
+                          <td>{{datos.missed_votes_pct}}%</td>
+                        </tr>
+                      </tbody>
+                </table>
+            </div>
+
+            <div class="table table-bordered">
+                <h2>Most Loyal <br> (Top 10% of Party)</h2>
+                <table>
+                    <thead align="center">
+                        <tr>
+                            <th>Name</th>
+                            <th>Number Party Votes</th>
+                            <th>% Party Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mostLoyaly" align="center">
+                        <tr v-for="datos in ml" :key="datos.id">
+                          <td><a :href=datos.url target="blank">{{datos.first_name}}
+                              {{datos.middle_name || ""}} {{datos.last_name}}</a></td>
+                          <td>{{datos.missed_votes}}</td>
+                          <td>{{datos.missed_votes_pct}}%</td>
+                        </tr>
+                      </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <footer class="mx-5 my-5 bg-light border border-5">
+        <div class="d-flex justify-content-center">
+            <h5 class="p-2"><i class="fas fa-copyright"></i> 2021 Data Insight Group | All Rights Reserved</h5>
+        </div>
+    </footer>
+
+    <script src="./JScript-DIG/pro-congress-113-senate.js"></script>
+    <script src="./JScript-DIG/filtros.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
